@@ -1,0 +1,15 @@
+Redis được ứng dụng trong nhiều trường hợp khác nhau như:
+
+1. Caching: Redis được sử dụng làm cache để lưu trữ dữ liệu tạm thời trong bộ nhớ, giúp tăng tốc độ truy cập dữ liệu. Bằng cách lưu trữ dữ liệu phổ biến hoặc kết quả tính toán trước đó trong Redis, ứng dụng có thể truy cập nhanh chóng dữ liệu mà không cần truy vấn cơ sở dữ liệu chính.
+
+2. Session Store: Redis được sử dụng để lưu trữ thông tin phiên (session) của người dùng. Thay vì lưu trữ phiên trực tiếp trên máy chủ ứng dụng, thông tin phiên được lưu trữ trong Redis, giúp quản lý và truy xuất phiên một cách hiệu quả, đồng thời hỗ trợ tính năng như khóa, hết hạn và tìm kiếm nhanh.
+
+3. Message Broker: Redis có hỗ trợ cho cơ chế publish/subscribe (Pub/Sub), cho phép các ứng dụng gửi và nhận thông điệp realtime qua kênh phát sóng. Redis có thể được sử dụng như một message broker, cho phép các ứng dụng gửi và nhận thông điệp qua các kênh đăng ký.
+
+4. Real-time Leaderboards và Counters: Redis hỗ trợ các cấu trúc dữ liệu như sorted sets và hashes, giúp xây dựng các bảng xếp hạng và bộ đếm realtime. Các ứng dụng có thể sử dụng Redis để theo dõi và cập nhật thứ hạng, số lượt xem, số lượng người dùng trực tuyến và các thống kê khác một cách nhanh chóng.
+
+5. Điều khiển rate: Redis có thể được sử dụng để kiểm soát tốc độ truy cập đến các tài nguyên. Bằng cách sử dụng cấu trúc dữ liệu của Redis và các thuật toán điều khiển, bạn có thể giới hạn số lượng yêu cầu được chấp nhận trong một khoảng thời gian nhất định, giúp bảo vệ hệ thống khỏi các tấn công và quá tải.
+
+Đây chỉ là một số ứng dụng phổ biến của Redis, và nó có thể được sử dụng trong nhiều trường hợp khác nhau tùy thuộc vào yêu cầu và tình huống cụ thể của ứng dụng.
+
+tham khảo: https://www.npmjs.com/package/@socket.io/redis-adapter
