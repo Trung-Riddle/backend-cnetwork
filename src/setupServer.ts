@@ -12,6 +12,7 @@ import 'express-async-errors'
 import compression from 'compression'
 import { config } from './config'
 import ApplicationRoutes from './routes'
+import { CustomError, IError, IErrorResponse } from './shared/global/helpers/errorHandler'
 
 const SERVER_PORT = 4080
 export class Lime8Server {
@@ -58,7 +59,18 @@ export class Lime8Server {
     private routesMiddleware(app: Application): void {
         ApplicationRoutes(app)
     }
-    private globalErrorHandler(app: Application): void {}
+    private globalErrorHandler(app: Application): void {
+        app.all('*', (req: Request, res: Response) => {
+            res.status(HTTP_STATUS.NOT_FOUND).json( {message: `${req.originalUrl} not found`})
+        })
+        app.use((error: IErrorResponse, _req: Request, res: Response, next: NextFunction) => {
+            console.log(error)
+            if (error instanceof CustomError) {
+                return res.status(error.statusCode).json(error.serializeError)
+            }
+            next()
+        })
+    }
     private async startServer(app: Application): Promise<void> {
         try {
             const httpServer: http.Server = new http.Server(app)

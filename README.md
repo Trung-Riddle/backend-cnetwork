@@ -20,3 +20,4 @@
 - npm i --save-dev nodemon ts-node
 - npm install --save-dev tsconfig-paths
 - npm install @socket.io/redis-adapter redis socket.io
+- npm i bunyan
