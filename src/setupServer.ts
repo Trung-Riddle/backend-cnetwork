@@ -84,8 +84,8 @@ export class Lime8Server {
     try {
       const httpServer: http.Server = new http.Server(app);
       this.startHttpServer(httpServer);
-      const socketIO: ServerSocketIO = await this.createSocketIO(httpServer);
-      this.socketIOConnection(socketIO);
+      // const socketIO: ServerSocketIO = await this.createSocketIO(httpServer);
+      // this.socketIOConnection(socketIO);
     } catch (error) {
       log.error(error);
     }

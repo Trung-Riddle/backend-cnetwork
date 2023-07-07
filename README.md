@@ -23,5 +23,7 @@
 - npm i bunyan and npm i --save-dev @types/bunyan
 - npm i -D eslint eslint-config-prettier prettier @typescript-eslint/eslint-plugin @typescript-eslint/parser
 -  npm i @bull-board/express @faker-js/faker axios bcryptjs bull bullmq canvas cloudinary @bull-board/ui ejs @jest/types @sendgrid/mail joi
+- npm i --save-dev @types/bcryptjs
+- npm i jsonwebtoken lodash
 
 - npm install --save-dev tsc-alias
