@@ -7,9 +7,9 @@ Content-Type: application/json
 Accept: application/json
 withCredentials: true
 {
-  "username": "",
-  "password": "",
-  "email": "",
-  "avatarColor": "",
-  "avatarImage": "",
+  "username": "your_username",
+  "password": "your_password",
+  "email": "your_email@example.com",
+  "avatarColor": "your_avatar_color",
+  "avatarImage": "your_avatar_image"
 }
