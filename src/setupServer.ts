@@ -74,8 +74,9 @@ export class Lime8Server {
     });
     app.use((error: IErrorResponse, _req: Request, res: Response, next: NextFunction) => {
       log.error(error);
+
       if (error instanceof CustomError) {
-        return res.status(error.statusCode).json(error.serializeError);
+        return res.status(error.statusCode).json(error.serializeError());
       }
       next();
     });

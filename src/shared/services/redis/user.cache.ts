@@ -10,7 +10,7 @@ export class UserCache extends BaseCache {
     super('userCache');
   }
   public async saveUserToCache(key: string, userUid: string, createUser: IUserDocument): Promise<void> {
-    const createAt = new Date();
+    const createdAt = new Date();
     const {
       _id,
       uId,
@@ -24,7 +24,6 @@ export class UserCache extends BaseCache {
       profilePicture,
       followersCount,
       followingCount,
-      relationship,
       relatives,
       notifications,
       work,
@@ -49,7 +48,6 @@ export class UserCache extends BaseCache {
       'profilePicture': `${profilePicture}`,
       'followersCount': `${followersCount}`,
       'followingCount': `${followingCount}`,
-      'relationship': `${relationship}`,
       'relatives': JSON.stringify(relatives),
       'notifications': JSON.stringify(notifications),
       'work': `${work}`,
@@ -58,7 +56,8 @@ export class UserCache extends BaseCache {
       'quote': `${quote}`,
       'bgImageCover': `${bgImageCover}`,
       'bgImageId': `${bgImageId}`,
-      'social': JSON.stringify(social)
+      'social': JSON.stringify(social),
+      'createdAt': `${createdAt}`,
     };
     try {
       if (!this.client.isOpen) {

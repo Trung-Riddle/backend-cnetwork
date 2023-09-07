@@ -25,5 +25,7 @@
 -  npm i @bull-board/express @faker-js/faker axios bcryptjs bull bullmq canvas cloudinary @bull-board/ui ejs @jest/types @sendgrid/mail joi
 - npm i --save-dev @types/bcryptjs
 - npm i jsonwebtoken lodash
+- npm i --save-dev @types/lodash
+- npm i --save-dev @types/jsonwebtoken
 
 - npm install --save-dev tsc-alias

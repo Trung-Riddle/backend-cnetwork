@@ -14,7 +14,6 @@ const userSchema: Schema = new Schema({
   blocked: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
   blockedBy: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
   relatives : [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
-  relationship: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   notifications: {
     messages: { type: Boolean, default: true },
     reactions: { type: Boolean, default: true },
