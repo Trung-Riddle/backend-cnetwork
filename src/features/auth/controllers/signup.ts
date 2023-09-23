@@ -53,13 +53,13 @@ export class SignUp {
     authQueue.addAuthUserJob('addAuthUserToDB', { value: authData});
     userQueue.addUserJob('addUserToDB', { value: userDataForCache });
 
-    const userJWT: string = SignUp.prototype.signupToken(authData, userObjId);
+    const userJWT: string = SignUp.prototype.signToken(authData, userObjId);
 
     req.session = { jwt: userJWT };
     res.status(HTTP_STATUS.CREATED).json({ message: 'User created Successfully', user: userDataForCache, token: userJWT });
   }
 
-  private signupToken(data: IAuthDocument, userObjectId: ObjectId): string {
+  private signToken(data: IAuthDocument, userObjectId: ObjectId): string {
     return JWT.sign(
       {
         userId: userObjectId,

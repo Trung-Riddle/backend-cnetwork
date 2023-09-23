@@ -26,7 +26,6 @@ export interface IUserDocument extends Document {
   bgImageId: string
   profilePicture: string
   relatives?: mongoose.Types.ObjectId[]
-  relationship?: mongoose.Types.ObjectId
   passwordResetToken?: string
   passwordResetExpires?: number | string
   status?: boolean

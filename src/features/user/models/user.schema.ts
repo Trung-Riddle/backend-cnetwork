@@ -2,7 +2,7 @@ import { IUserDocument } from './../interfaces/user.interface';
 import mongoose, { model, Model, Schema } from 'mongoose';
 
 const userSchema: Schema = new Schema({
-  authId: { type: mongoose.Schema.Types.ObjectId, ref: 'Auth' },
+  authId: { type: mongoose.Schema.Types.ObjectId, ref: 'Auth', index: true },
   fullName: { type: String, default: '' },
   birthday: { type: Date },
   profilePicture: { type: String, default: '' },
