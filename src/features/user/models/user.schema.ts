@@ -13,12 +13,12 @@ const userSchema: Schema = new Schema({
   passwordResetExpires: { type: Number },
   blocked: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
   blockedBy: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
-  relatives : [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+  relatives: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
   notifications: {
     messages: { type: Boolean, default: true },
     reactions: { type: Boolean, default: true },
     comments: { type: Boolean, default: true },
-    follows: { type: Boolean, default: true },
+    follows: { type: Boolean, default: true }
   },
   social: {
     facebook: { type: String, default: '' },

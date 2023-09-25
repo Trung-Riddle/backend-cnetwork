@@ -18,5 +18,4 @@ export abstract class BaseCache {
       this.log.error(error);
     });
   }
-
 }

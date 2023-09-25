@@ -24,13 +24,16 @@ export class SignIn {
     }
 
     const user: IUserDocument = await userService.getUserByAuthId(`${existingUser._id}`);
-    const userJWT: string = JWT.sign({
-      userId: user._id,
-      uId: existingUser.uId,
-      email: existingUser.email,
-      username: existingUser.username,
-      avatarColor: existingUser.avatarColor
-    }, config.JWT_TOKEN!);
+    const userJWT: string = JWT.sign(
+      {
+        userId: user._id,
+        uId: existingUser.uId,
+        email: existingUser.email,
+        username: existingUser.username,
+        avatarColor: existingUser.avatarColor
+      },
+      config.JWT_TOKEN!
+    );
     req.session = { jwt: userJWT };
     const userDocument: IUserDocument = {
       ...user,
@@ -39,7 +42,7 @@ export class SignIn {
       email: existingUser!.email,
       avatarColor: existingUser.avatarColor,
       uId: existingUser!.uId,
-      createdAt: existingUser.createAt,
+      createdAt: existingUser.createAt
     } as IUserDocument;
     res.status(HTTP_STATUS.OK).json({ message: 'User login Successfully', user: userDocument, token: userJWT });
   }

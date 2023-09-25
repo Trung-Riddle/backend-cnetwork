@@ -10,32 +10,32 @@ declare global {
   }
 }
 export interface AuthPayload {
-  userId: string
-  uId: string
-  email: string
-  username: string
-  avatarColor: string
-  iat?: number
+  userId: string;
+  uId: string;
+  email: string;
+  username: string;
+  avatarColor: string;
+  iat?: number;
 }
 export interface IAuthDocument extends Document {
-  _id: string | ObjectId
-  uId: string
-  email: string
-  username: string
-  password?: string
-  avatarColor: string
-  createAt: Date
-  comparePassword(password: string): Promise<boolean>
-  hashPassWord(password: string): Promise<boolean>
+  _id: string | ObjectId;
+  uId: string;
+  email: string;
+  username: string;
+  password?: string;
+  avatarColor: string;
+  createAt: Date;
+  comparePassword(password: string): Promise<boolean>;
+  hashPassWord(password: string): Promise<boolean>;
 }
 export interface ISignUpData {
-  _id: ObjectId
-  uId: string
-  email: string
-  username: string
-  password: string
-  avatarColor: string
+  _id: ObjectId;
+  uId: string;
+  email: string;
+  username: string;
+  password: string;
+  avatarColor: string;
 }
 export interface IAuthJob {
-  value?: string | IAuthDocument | IUserDocument
+  value?: string | IAuthDocument | IUserDocument;
 }

@@ -15,7 +15,6 @@ import { config } from '@root/config';
 import ApplicationRoutes from '@root/routes';
 import { CustomError, IErrorResponse } from '#Global/helpers/errorHandler';
 
-
 const SERVER_PORT = 4080;
 const log: Logger = config.createLogger('server');
 export class Lime8Server {
