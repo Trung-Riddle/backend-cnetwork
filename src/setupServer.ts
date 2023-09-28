@@ -15,7 +15,6 @@ import { config } from '@root/config';
 import ApplicationRoutes from '@root/routes';
 import { CustomError, IErrorResponse } from '#Global/helpers/errorHandler';
 
-
 const SERVER_PORT = 4080;
 const log: Logger = config.createLogger('server');
 export class Lime8Server {
@@ -74,8 +73,9 @@ export class Lime8Server {
     });
     app.use((error: IErrorResponse, _req: Request, res: Response, next: NextFunction) => {
       log.error(error);
+
       if (error instanceof CustomError) {
-        return res.status(error.statusCode).json(error.serializeError);
+        return res.status(error.statusCode).json(error.serializeError());
       }
       next();
     });
@@ -84,8 +84,8 @@ export class Lime8Server {
     try {
       const httpServer: http.Server = new http.Server(app);
       this.startHttpServer(httpServer);
-      // const socketIO: ServerSocketIO = await this.createSocketIO(httpServer);
-      // this.socketIOConnection(socketIO);
+      const socketIO: ServerSocketIO = await this.createSocketIO(httpServer);
+      this.socketIOConnection(socketIO);
     } catch (error) {
       log.error(error);
     }

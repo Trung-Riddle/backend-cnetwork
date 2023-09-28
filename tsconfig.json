@@ -25,6 +25,7 @@
     ],
     "paths": {
       "#Auth/*": ["src/features/auth/*"],
+      "#User/*": ["src/features/user/*"],
       "#Global/*": ["src/shared/global/*"],
       "#Services/*": ["src/shared/services/*"],
       "#Socket/*": ["src/shared/sockets/*"],

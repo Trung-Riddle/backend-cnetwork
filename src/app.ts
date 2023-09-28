@@ -10,6 +10,7 @@ class Application {
     const server: Lime8Server = new Lime8Server(app);
     server.start();
   }
+
   private loadConfig(): void {
     config.validateConfig();
     config.cloudinaryConfig();
