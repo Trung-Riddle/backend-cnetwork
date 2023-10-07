@@ -15,6 +15,10 @@ class Config {
   public CLOUDINARY_CLOUD_NAME: string | undefined;
   public CLOUDINARY_API_KEY: string | undefined;
   public CLOUDINARY_API_SECRET: string | undefined;
+  public SENDER_EMAIL: string | undefined;
+  public SENDER_EMAIL_PASSWORD: string | undefined;
+  public SENDGRID_API_KEY: string | undefined;
+  public SENDGRID_SENDER: string | undefined;
 
   private readonly DEFAULT_DATABASE_URL = 'mongodb://127.0.0.1:27017/lime8';
 
@@ -29,6 +33,10 @@ class Config {
     this.CLOUDINARY_CLOUD_NAME = process.env.CLOUDINARY_CLOUD_NAME || '';
     this.CLOUDINARY_API_KEY = process.env.CLOUDINARY_API_KEY || '';
     this.CLOUDINARY_API_SECRET = process.env.CLOUDINARY_API_SECRET || '';
+    this.SENDER_EMAIL = process.env.SENDER_EMAIL || '';
+    this.SENDER_EMAIL_PASSWORD = process.env.SENDER_EMAIL_PASSWORD || '';
+    this.SENDGRID_API_KEY = process.env.SENDGRID_API_KEY || '';
+    this.SENDGRID_SENDER = process.env.SENDGRID_SENDER || '';
   }
   public createLogger(name: string): bunyan {
     return bunyan.createLogger({

@@ -5,8 +5,9 @@ import { BullAdapter } from '@bull-board/api/bullAdapter';
 import { ExpressAdapter } from '@bull-board/express';
 import { config } from '@root/config';
 import { IAuthJob } from '#Auth/interfaces/auth.interface';
+import { IEmailJob } from '#User/interfaces/user.interface';
 
-type IBaseJobData = IAuthJob;
+type IBaseJobData = IAuthJob | IEmailJob;
 let bullAdapter: BullAdapter[] = [];
 export let serverAdapter: ExpressAdapter;
 

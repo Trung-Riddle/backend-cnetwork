@@ -84,7 +84,7 @@ export interface IAllUsers {
   users: IUserDocument[];
   totalUsers: number;
 }
-export interface IResetpasswordParams {
+export interface IResetPasswordParams {
   username: string;
   email: string;
   ipAddress: string;

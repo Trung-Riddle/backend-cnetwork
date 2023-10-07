@@ -1,8 +1,8 @@
 import { authRoutes } from '#Auth/routes/authRoutes';
-import { serverAdapter } from '#Services/queues/base.queue';
+import { serverAdapter } from '@root/common/services/queues/base.queue';
 import { Application } from 'express';
 import { currentRoutes } from '#Auth/routes/currentRoutes';
-import { authMiddleware } from '#Global/helpers/authen-middlewares';
+import { authMiddleware } from '@root/common/global/helpers/authen-middlewares';
 
 const BASE_PATH = '/api/v1';
 

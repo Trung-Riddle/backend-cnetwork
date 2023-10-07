@@ -13,7 +13,7 @@ import compression from 'compression';
 import Logger from 'bunyan';
 import { config } from '@root/config';
 import ApplicationRoutes from '@root/routes';
-import { CustomError, IErrorResponse } from '#Global/helpers/errorHandler';
+import { CustomError, IErrorResponse } from '@root/common/global/helpers/errorHandler';
 
 const SERVER_PORT = 4080;
 const log: Logger = config.createLogger('server');
@@ -49,6 +49,7 @@ export class Lime8Server {
         methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
       })
     );
+    console.log(config.CLIENT_URL);
   }
   private standardMiddleware(app: Application): void {
     app.use(compression()); // nén data trc khi gửi về client , cải thiện hiệu suất mạng

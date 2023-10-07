@@ -1,4 +1,4 @@
-import { Helper } from '#Global/helpers/helper';
+import { Helper } from '@root/common/global/helpers/helper';
 import { IUserDocument } from '#User/interfaces/user.interface';
 import { UserModel } from '#User/models/user.schema';
 import mongoose from 'mongoose';
