@@ -1,17 +1,16 @@
 import Joi, { ObjectSchema } from 'joi';
 
 const loginSchema: ObjectSchema = Joi.object().keys({
-  username: Joi.string().required().min(4).max(8).messages({
-    'string.base': 'Username must be of type string',
-    'string.min': 'Invalid username',
-    'string.max': 'Invalid username',
-    'string.empty': 'Username is a required field'
+  email: Joi.string().required().email().messages({
+    'string.base': 'Email phải là kiểu chuỗi',
+    'string.email': 'Email sai định dạng',
+    'string.empty': 'Email không được để trống'
   }),
-  password: Joi.string().required().min(4).max(8).messages({
-    'string.base': 'Password must be of type string',
-    'string.min': 'Invalid password',
-    'string.max': 'Invalid password',
-    'string.empty': 'Password is a required field'
+  password: Joi.string().required().min(6).max(12).messages({
+    'string.base': 'Password phải là kiểu chuỗi',
+    'string.min': 'Mật khẩu tối thiểu 6 kí tự',
+    'string.max': 'Mật khẩu tối đa 12 kí tự',
+    'string.empty': 'Mật khẩu không được bỏ trống'
   })
 });
 

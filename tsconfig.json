@@ -26,6 +26,9 @@
     "paths": {
       "#Auth/*": ["src/features/auth/*"],
       "#User/*": ["src/features/user/*"],
+      "#Post/*": ["src/features/post/*"],
+      "#Reaction/*": ["src/features/reactions/*"],
+      "#Comment/*": ["src/features/comment/*"],
       "#Global/*": ["src/common/global/*"],
       "#Services/*": ["src/common/services/*"],
       "#Socket/*": ["src/common/sockets/*"],
