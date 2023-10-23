@@ -2,20 +2,20 @@ import HTTP_STATUS from 'http-status-codes';
 import { IUserDocument } from '#User/interfaces/user.interface';
 import { ObjectId } from 'mongodb';
 import { Response, Request } from 'express';
-import { joiValidation } from '#Global/decorators/joi-validation.decorator';
-import { signupSchema } from '#Auth/schemes/signup';
+import { joiValidation } from '@root/common/global/decorators/joi-validation.decorator';
+import { signupSchema } from '#Auth/schemas/signup';
 import { IAuthDocument, ISignUpData } from '#Auth/interfaces/auth.interface';
-import { authService } from '#Services/db/auth.service';
-import { BadRequestError } from '#Global/helpers/errorHandler';
-import { Helper } from '#Global/helpers/helper';
+import { authService } from '@root/common/services/db/auth.service';
+import { BadRequestError } from '@root/common/global/helpers/errorHandler';
+import { Helper } from '@root/common/global/helpers/helper';
 import { UploadApiResponse } from 'cloudinary';
-import { uploads } from '#Global/helpers/cloudinary-upload';
-import { UserCache } from '#Services/redis/user.cache';
+import { uploads } from '@root/common/global/helpers/cloudinary-upload';
+import { UserCache } from '@root/common/services/redis/user.cache';
 import { config } from '@root/config';
 import { omit } from 'lodash';
 import JWT from 'jsonwebtoken';
-import authQueue from '#Services/queues/auth.queue';
-import userQueue from '#Services/queues/user.queue';
+import authQueue from '@root/common/services/queues/auth.queue';
+import userQueue from '@root/common/services/queues/user.queue';
 
 const userCache: UserCache = new UserCache();
 export class SignUp {
@@ -23,7 +23,7 @@ export class SignUp {
   public async create(req: Request, res: Response): Promise<void> {
     const { username, email, password, avatarColor, avatarImage } = req.body;
     const checkIfUserExist: IAuthDocument = await authService.getUserByUsernameOrEmail(username, email);
-
+    console.log(checkIfUserExist);
     if (checkIfUserExist) {
       throw new BadRequestError('Invalid credentials');
     }

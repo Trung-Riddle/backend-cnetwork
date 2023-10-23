@@ -26,10 +26,13 @@
     "paths": {
       "#Auth/*": ["src/features/auth/*"],
       "#User/*": ["src/features/user/*"],
-      "#Global/*": ["src/shared/global/*"],
-      "#Services/*": ["src/shared/services/*"],
-      "#Socket/*": ["src/shared/sockets/*"],
-      "#Worker/*": ["src/shared/workers/*"],
+      "#Post/*": ["src/features/post/*"],
+      "#Reaction/*": ["src/features/reactions/*"],
+      "#Comment/*": ["src/features/comment/*"],
+      "#Global/*": ["src/common/global/*"],
+      "#Services/*": ["src/common/services/*"],
+      "#Socket/*": ["src/common/sockets/*"],
+      "#Worker/*": ["src/common/workers/*"],
       "@root/*": ["src/*"]
     }
   }

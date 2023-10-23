@@ -1,26 +1,25 @@
 import { Response, Request } from 'express';
-import { joiValidation } from '#Global/decorators/joi-validation.decorator';
-import { authService } from '#Services/db/auth.service';
-import { BadRequestError } from '#Global/helpers/errorHandler';
+import { joiValidation } from '@root/common/global/decorators/joi-validation.decorator';
+import { authService } from '@root/common/services/db/auth.service';
+import { BadRequestError } from '@root/common/global/helpers/errorHandler';
 import { config } from '@root/config';
 import JWT from 'jsonwebtoken';
 import HTTP_STATUS from 'http-status-codes';
-import { loginSchema } from '#Auth/schemes/signin';
+import { loginSchema } from '#Auth/schemas/signin';
 import { IAuthDocument } from '#Auth/interfaces/auth.interface';
 import { IUserDocument } from '#User/interfaces/user.interface';
-import { userService } from '#Services/db/user.service';
+import { userService } from '@root/common/services/db/user.service';
 export class SignIn {
   @joiValidation(loginSchema)
   public async read(req: Request, res: Response): Promise<void> {
-    const { username, password } = req.body;
-    const existingUser: IAuthDocument = await authService.getAuthUserByUsername(username);
-
+    const { email, password } = req.body;
+    const existingUser: IAuthDocument = await authService.getAuthUserByEmail(email);
     if (!existingUser) {
-      throw new BadRequestError('Invalid credentials');
+      throw new BadRequestError('Thông tin không hợp lệ');
     }
     const passwordMatch: boolean = await existingUser.comparePassword(password);
     if (!passwordMatch) {
-      throw new BadRequestError('wrong password');
+      throw new BadRequestError('Sai mật khẩu');
     }
 
     const user: IUserDocument = await userService.getUserByAuthId(`${existingUser._id}`);
@@ -44,6 +43,6 @@ export class SignIn {
       uId: existingUser!.uId,
       createdAt: existingUser.createAt
     } as IUserDocument;
-    res.status(HTTP_STATUS.OK).json({ message: 'User login Successfully', user: userDocument, token: userJWT });
+    res.status(HTTP_STATUS.OK).json({ message: 'Đăng nhập thành công', user: userDocument, token: userJWT });
   }
 }
