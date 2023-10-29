@@ -14,6 +14,7 @@ import Logger from 'bunyan';
 import { config } from '@root/config';
 import ApplicationRoutes from '@root/routes';
 import { CustomError, IErrorResponse } from '@root/common/global/helpers/errorHandler';
+import { SocketIOPostHandler } from '#Socket/post.socket';
 
 const SERVER_PORT = 4080;
 const log: Logger = config.createLogger('server');
@@ -112,6 +113,9 @@ export class Lime8Server {
     });
   }
   private socketIOConnection(io: ServerSocketIO): void {
-    log.info('socketIOConnection');
+    // log.info('socketIOConnection');
+    const postSocketHandler: SocketIOPostHandler = new SocketIOPostHandler(io);
+
+    postSocketHandler.listen();
   }
 }

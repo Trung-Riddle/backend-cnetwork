@@ -27,6 +27,7 @@ export interface IPostDocument extends Document {
   feelings?: string;
   gifUrl?: string;
   privacy?: string;
+  suggestions?: string;
   reactions?: IReactions;
   createdAt?: Date;
 }
