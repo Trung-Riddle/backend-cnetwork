@@ -10,6 +10,7 @@ import postQueue from '#Services/queues/post.queue';
 import { UploadApiResponse } from 'cloudinary';
 import { uploads } from '#Global/helpers/cloudinary-upload';
 import { BadRequestError } from '#Global/helpers/errorHandler';
+import imageQueue from '#Services/queues/image.queue';
 
 const postCache: PostCache = new PostCache();
 export class CreatePost {
@@ -46,7 +47,7 @@ export class CreatePost {
       createdPost
     });
     postQueue.addPostJob('addPostToDB', { key: req.currentUser!.userId, value: createdPost });
-    res.status(HTTP_STATUS.CREATED).json({ message: 'Đăng bài thành công'});
+    res.status(HTTP_STATUS.CREATED).json({ message: 'Đăng bài thành công' });
   }
   @joiValidation(postWithImageSchema)
   public async postWithImage(req: Request, res: Response): Promise<void> {
@@ -85,6 +86,11 @@ export class CreatePost {
       createdPost
     });
     postQueue.addPostJob('addPostToDB', { key: req.currentUser!.userId, value: createdPost });
-    res.status(HTTP_STATUS.CREATED).json({ message: 'Đăng bài thành công'});
+    imageQueue.addImageJob('addImageToDB', {
+      key: `${req.currentUser!.userId}`,
+      imgId: result.public_id,
+      imgVersion: result.version.toString()
+    });
+    res.status(HTTP_STATUS.CREATED).json({ message: 'Đăng bài thành công' });
   }
 }
