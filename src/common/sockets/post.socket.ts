@@ -7,6 +7,7 @@ export class SocketIOPostHandler {
   private io: Server;
   constructor(io: Server) {
     this.io = io;
+    socketIOPostObject = io;
   }
   public listen(): void {
     this.io.on('connection', (socket: Socket) => {
