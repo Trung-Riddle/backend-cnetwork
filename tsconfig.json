@@ -33,6 +33,7 @@
       "#Services/*": ["src/common/services/*"],
       "#Socket/*": ["src/common/sockets/*"],
       "#Worker/*": ["src/common/workers/*"],
+      "#Image/*": ["src/features/images/*"],
       "@root/*": ["src/*"]
     }
   }
