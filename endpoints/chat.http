@@ -1,0 +1,19 @@
+
+@baseUrl = http://localhost:4080
+@urlPath = api/v1
+###
+POST {{baseUrl}}/{{urlPath}}/chat/message
+Content-Type: application/json
+Accept: application/json
+withCredentials: true
+{
+  "conversationId": "6543f07464b239a1ddc8f03c",
+  "receiverId": "65359279635963e69f63dfb2",
+  "receiverUsername": "Testcol14",
+  "receiverAvatarColor": "#84ffff",
+  "receiverProfilePicture": "https://res.cloudinary.com/dgyk7uloc/image/upload/v1698009723/65359279635963e69f63dfb2",
+  "content": "Adu em dang lam gi do cung oi",
+  "gifUrl": "",
+  "isRead": "false",
+  "selectedImage": ""
+}
