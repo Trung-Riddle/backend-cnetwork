@@ -34,7 +34,7 @@ export interface IMessageData {
   senderId: string;
   senderAvatarColor: string;
   senderProfilePicture: string;
-  body: string;
+  content: string;
   isRead: boolean;
   gifUrl: string;
   selectedImage: string;
@@ -49,7 +49,7 @@ export interface IMessageNotification {
   message: string;
   receiverName: string;
   receiverId: string;
-  messageData: IMessageData;
+  messageData?: IMessageData;
 }
 
 export interface IChatUsers {

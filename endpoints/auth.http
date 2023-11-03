@@ -1,0 +1,13 @@
+@baseUrl = http://localhost:4080
+@urlPath = api/v1
+
+###
+POST {{baseUrl}}/{{urlPath}}/signin
+Content-Type: application/json
+Accept: application/json
+withCredentials: true
+
+{
+  "email": "trungitvietnam@gmail.com",
+  "password": "123456"
+}

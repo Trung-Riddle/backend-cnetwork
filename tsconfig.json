@@ -29,6 +29,7 @@
       "#Post/*": ["src/features/post/*"],
       "#Reaction/*": ["src/features/reactions/*"],
       "#Comment/*": ["src/features/comment/*"],
+      "#Chat/*": ["src/features/chat/*"],
       "#Notification/*": ["src/features/notifications/*"],
       "#Global/*": ["src/common/global/*"],
       "#Services/*": ["src/common/services/*"],

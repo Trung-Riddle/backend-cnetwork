@@ -13,3 +13,5 @@ Redis được ứng dụng trong nhiều trường hợp khác nhau như:
 Đây chỉ là một số ứng dụng phổ biến của Redis, và nó có thể được sử dụng trong nhiều trường hợp khác nhau tùy thuộc vào yêu cầu và tình huống cụ thể của ứng dụng.
 
 tham khảo: https://www.npmjs.com/package/@socket.io/redis-adapter
+
+SENDGRID_PW_LOGIN=q5aYis-YqAkjnVX88

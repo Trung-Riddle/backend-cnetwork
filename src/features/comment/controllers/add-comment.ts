@@ -5,22 +5,21 @@ import { Request, Response } from 'express';
 import HTTP_STATUS from 'http-status-codes';
 import { ObjectId } from 'mongodb';
 import mongoose from 'mongoose';
-import { addChatSchema } from '../schemas/chat';
+import { addChatSchema } from '#Chat/schemas/chat';
 import { IUserDocument } from '#User/interfaces/user.interface';
 import { uploads } from '#Global/helpers/cloudinary-upload';
 import { BadRequestError } from '#Global/helpers/errorHandler';
 import { config } from '@root/config';
 import { IMessageData, IMessageNotification } from '#Chat/interfaces/chat.interface';
 import { socketIOChatObject } from '#Socket/chat.socket';
-import { INotificationTemplate } from '#Notification/interfaces/notification.interface';
+import { INotification, INotificationTemplate } from '#Notification/interfaces/notification.interface';
 import notificationTemplate from '#Services/email/templates/notifications/notification.template';
 import emailQueue from '#Services/queues/email.queue';
-import { MessageCache } from '#Services/redis/message.cache';
 
 const userCache: UserCache = new UserCache();
-const messageCache: MessageCache = new MessageCache();
+// const messageCache: MessageCache = new MessageCache();
 
-export class AddChat {
+export class AddComment {
   @joiValidation(addChatSchema)
   public async message(req: Request, res: Response): Promise<void> {
     const {
@@ -67,24 +66,17 @@ export class AddChat {
       deleteForEveryone: false,
       deleteForMe: false
     };
-    AddChat.prototype.emitSocketIOEvent(messageData);
-    if (isRead === 'false') {
-      AddChat.prototype.messageNotification({
+    AddComment.prototype.emitSocketIOEvent(messageData);
+    if (!isRead) {
+      AddComment.prototype.messageNotification({
         currentUser: req.currentUser!,
         message: content,
         receiverName: receiverUsername,
-        receiverId
+        receiverId,
+        messageData
       });
     }
-    await messageCache.addChatListToCache(`${req.currentUser?.userId}`, `${receiverId}`, `${conversationObjectId}`);
-    await messageCache.addChatListToCache(`${receiverId}`, `${req.currentUser?.userId}`, `${conversationObjectId}`);
-    await messageCache.addChatMessageToCache(`${conversationObjectId}`, messageData);
-    res.status(HTTP_STATUS.OK).json({ message: 'Tin nhắn được thêm', conversationId: conversationObjectId });
-  }
-  public async addChatUsers(req: Request, res: Response): Promise<void> {
-    const chatUsers = await messageCache.addChatUsersToCache(req.body);
-    socketIOChatObject.emit('add chat users', chatUsers);
-    res.status(HTTP_STATUS.OK).json({ message: 'Users added' });
+    res.status(HTTP_STATUS.OK).json({ message: 'Vừa đăng bình luận'});
   }
   private emitSocketIOEvent(data: IMessageData): void {
     socketIOChatObject.emit('Message received', data);
