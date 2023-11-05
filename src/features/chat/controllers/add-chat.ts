@@ -16,6 +16,7 @@ import { INotificationTemplate } from '#Notification/interfaces/notification.int
 import notificationTemplate from '#Services/email/templates/notifications/notification.template';
 import emailQueue from '#Services/queues/email.queue';
 import { MessageCache } from '#Services/redis/message.cache';
+import chatQueue from '#Services/queues/chat.queue';
 
 const userCache: UserCache = new UserCache();
 const messageCache: MessageCache = new MessageCache();
@@ -68,7 +69,7 @@ export class AddChat {
       deleteForMe: false
     };
     AddChat.prototype.emitSocketIOEvent(messageData);
-    if (isRead === 'false') {
+    if (!isRead) {
       AddChat.prototype.messageNotification({
         currentUser: req.currentUser!,
         message: content,
@@ -79,12 +80,18 @@ export class AddChat {
     await messageCache.addChatListToCache(`${req.currentUser?.userId}`, `${receiverId}`, `${conversationObjectId}`);
     await messageCache.addChatListToCache(`${receiverId}`, `${req.currentUser?.userId}`, `${conversationObjectId}`);
     await messageCache.addChatMessageToCache(`${conversationObjectId}`, messageData);
+    chatQueue.addChatJob('addChatMessageToDB', messageData);
     res.status(HTTP_STATUS.OK).json({ message: 'Tin nhắn được thêm', conversationId: conversationObjectId });
   }
   public async addChatUsers(req: Request, res: Response): Promise<void> {
     const chatUsers = await messageCache.addChatUsersToCache(req.body);
     socketIOChatObject.emit('add chat users', chatUsers);
     res.status(HTTP_STATUS.OK).json({ message: 'Users added' });
+  }
+  public async removeChatUsers(req: Request, res: Response): Promise<void> {
+    const chatUsers = await messageCache.removeChatUsersFromCache(req.body);
+    socketIOChatObject.emit('add chat users', chatUsers);
+    res.status(HTTP_STATUS.OK).json({ message: 'Users removed' });
   }
   private emitSocketIOEvent(data: IMessageData): void {
     socketIOChatObject.emit('Message received', data);
@@ -100,7 +107,7 @@ export class AddChat {
       };
       const template: string = notificationTemplate.notificationMessageTemplate(templateParams);
       emailQueue.addEmailJob('directMessageEmail', {
-        receiverEmail: currentUser.email!,
+        receiverEmail: cachedUser.email!,
         template,
         subject: `Bạn có tin nhắn từ ${currentUser.username}`
       });

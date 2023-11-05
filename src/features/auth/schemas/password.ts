@@ -9,15 +9,15 @@ const emailSchema: ObjectSchema = Joi.object().keys({
 });
 
 const passwordSchema: ObjectSchema = Joi.object().keys({
-  password: Joi.string().required().min(4).max(8).messages({
-    'string.base': 'Password should be of type string',
-    'string.min': 'Invalid password',
-    'string.max': 'Invalid password',
-    'string.empty': 'Password is a required field'
+  password: Joi.string().required().min(6).max(12).messages({
+    'string.base': 'Mật khẩu phải là kiểu chuỗi',
+    'string.min': 'Mật khẩu tối thiểu 6 kí tự',
+    'string.max': 'Mật khẩu tối đa 12 kí tự',
+    'string.empty': 'Mật khẩu không được bỏ trống'
   }),
   confirmPassword: Joi.string().required().valid(Joi.ref('password')).messages({
-    'any.only': 'Passwords should match',
-    'any.required': 'Confirm password is a required field'
+    'any.only': 'Mật khẩu Không khớp',
+    'any.required': 'Xác nhận mật khẩu không được bỏ trống'
   })
 });
 
