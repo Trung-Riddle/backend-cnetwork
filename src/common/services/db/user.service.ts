@@ -1,7 +1,8 @@
 import { Helper } from '@root/common/global/helpers/helper';
-import { IUserDocument } from '#User/interfaces/user.interface';
+import { ISearchUser, IUserDocument } from '#User/interfaces/user.interface';
 import { UserModel } from '#User/models/user.schema';
 import mongoose from 'mongoose';
+import { AuthModel } from '#Auth/models/auth.schema';
 
 class UserService {
   public async addUserData(data: IUserDocument): Promise<void> {
@@ -25,6 +26,38 @@ class UserService {
     ]);
     return users[0];
   }
+
+  public async getAllUsers(userId: string, skip: number, limit: number): Promise<IUserDocument[]> {
+    const users: IUserDocument[] = await UserModel.aggregate([
+      { $match: { _id: { $ne: new mongoose.Types.ObjectId(userId) } } },
+      { $skip: skip },
+      { $limit: limit },
+      { $sort: { createdAt: -1 } },
+      { $lookup: { from: 'Auth', localField: 'authId', foreignField: '_id', as: 'authId' } },
+      { $unwind: '$authId' },
+      { $project: this.aggregateProject() }
+    ]);
+    return users;
+  }
+
+  public async searchUsers(regex: RegExp): Promise<ISearchUser[]> {
+    const users = await AuthModel.aggregate([
+      { $match: { username: regex } },
+      { $lookup: { from: 'User', localField: '_id', foreignField: 'authId', as: 'user' } },
+      { $unwind: '$user' },
+      {
+        $project: {
+          _id: '$user._id',
+          username: 1,
+          email: 1,
+          avatarColor: 1,
+          profilePicture: '$user.profilePicture'
+        }
+      }
+    ]);
+    return users;
+  }
+
   private aggregateProject() {
     return {
       _id: 1,

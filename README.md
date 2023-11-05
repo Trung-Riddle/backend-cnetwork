@@ -29,3 +29,6 @@
 - npm i --save-dev @types/jsonwebtoken
 
 - npm install --save-dev tsc-alias
+
+(- service/db -> worker -> queues -> controllers)
+(- redis -> controllers)

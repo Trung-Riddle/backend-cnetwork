@@ -27,4 +27,7 @@ export class Helper {
     }
     return JSON.parse(prop);
   }
+  static escapeRegex(text: string): string {
+    return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
+  }
 }
