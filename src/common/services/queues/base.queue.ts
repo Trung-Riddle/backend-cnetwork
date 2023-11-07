@@ -9,8 +9,9 @@ import { IEmailJob } from '#User/interfaces/user.interface';
 import { IPostJobData } from '#Post/interfaces/post.interface';
 import { IChatJobData, IMessageData } from '#Chat/interfaces/chat.interface';
 import { IFollowerJobData } from '#Follower/interfaces/follwer.interface';
+import { IReactionJob } from '#Reaction/interfaces/reaction.interface';
 
-type IBaseJobData = IAuthJob | IEmailJob | IPostJobData | IChatJobData | IMessageData | IFollowerJobData;
+type IBaseJobData = IAuthJob | IEmailJob | IPostJobData | IChatJobData | IMessageData | IFollowerJobData | IReactionJob;
 let bullAdapter: BullAdapter[] = [];
 export let serverAdapter: ExpressAdapter;
 
