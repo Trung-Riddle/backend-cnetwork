@@ -16,6 +16,8 @@ import ApplicationRoutes from '@root/routes';
 import { CustomError, IErrorResponse } from '@root/common/global/helpers/errorHandler';
 import { SocketIOPostHandler } from '#Socket/post.socket';
 import { SocketIOChatHandler } from '#Socket/chat.socket';
+import { SocketIOFollowerHandler } from '#Socket/follower.socket';
+import { SocketIOUserHandler } from '#Socket/user';
 
 const SERVER_PORT = 4080;
 const log: Logger = config.createLogger('server');
@@ -117,8 +119,12 @@ export class Lime8Server {
     // log.info('socketIOConnection');
     const postSocketHandler: SocketIOPostHandler = new SocketIOPostHandler(io);
     const messageSocketHandler: SocketIOChatHandler = new SocketIOChatHandler(io);
+    const followerSocketHandler: SocketIOFollowerHandler = new SocketIOFollowerHandler(io);
+    const socketIOUserHandler: SocketIOUserHandler = new SocketIOUserHandler(io);
 
     postSocketHandler.listen();
+    followerSocketHandler.listen();
     messageSocketHandler.listen();
+    socketIOUserHandler.listen();
   }
 }

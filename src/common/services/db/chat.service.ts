@@ -1,9 +1,7 @@
-import { AuthModel } from '#Auth/models/auth.schema';
 import { IMessageData } from '#Chat/interfaces/chat.interface';
 import { IConversationDocument } from '#Chat/interfaces/conversation.interface';
 import { MessageModel } from '#Chat/models/chat.schema';
 import { ConversationModel } from '#Chat/models/conversation.schema';
-import { Helper } from '@root/common/global/helpers/helper';
 import { ObjectId } from 'mongodb';
 
 class ChatService {
@@ -38,7 +36,7 @@ class ChatService {
     });
   }
 
-  public async getUserConversationList(userId: ObjectId): Promise<IMessageData[]> {
+  public async getUserConversationList(userId: ObjectId): Promise<IMessageData[] | []> {
     const messages: IMessageData[] = await MessageModel.aggregate([
       { $match: { $or: [{ senderId: userId }, { receiverId: userId }] } },
       {
@@ -69,7 +67,7 @@ class ChatService {
       },
       { $sort: { createdAt: 1 } }
     ]);
-    return messages;
+    return messages || [];
   }
 
   public async getMessages(senderId: ObjectId, receiverId: ObjectId, sort: Record<string, 1 | -1>): Promise<IMessageData[]> {

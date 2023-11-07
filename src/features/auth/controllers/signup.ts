@@ -48,7 +48,7 @@ export class SignUp {
     await userCache.saveUserToCache(`${userObjId}`, uId, userDataForCache);
 
     // add to database
-    omit(userDataForCache, ['uId', 'username', 'email', 'avatarColor', 'password']);
+    // omit(userDataForCache, ['uId', 'username', 'email', 'avatarColor', 'password']);
     authQueue.addAuthUserJob('addAuthUserToDB', { value: authData });
     userQueue.addUserJob('addUserToDB', { value: userDataForCache });
 
