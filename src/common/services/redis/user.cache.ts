@@ -115,14 +115,14 @@ export class UserCache extends BaseCache {
       }
       const response: string[] = await this.client.ZRANGE('user', start, end, { REV: true });
       const multi: ReturnType<typeof this.client.multi> = this.client.multi();
-      for(const key of response) {
-        if(key !== excludedUserKey) {
+      for (const key of response) {
+        if (key !== excludedUserKey) {
           multi.HGETALL(`users:${key}`);
         }
       }
-      const replies: UserCacheMultiType = await multi.exec() as UserCacheMultiType;
+      const replies: UserCacheMultiType = (await multi.exec()) as UserCacheMultiType;
       const userReplies: IUserDocument[] = [];
-      for(const reply of replies as IUserDocument[]) {
+      for (const reply of replies as IUserDocument[]) {
         reply.createdAt = new Date(Helper.parseJson(`${reply.createdAt}`));
         reply.postsCount = Helper.parseJson(`${reply.postsCount}`);
         reply.blocked = Helper.parseJson(`${reply.blocked}`);
@@ -138,6 +138,18 @@ export class UserCache extends BaseCache {
         userReplies.push(reply);
       }
       return userReplies;
+    } catch (error) {
+      log.error(error);
+      throw new ServerError('Server error. Try again.');
+    }
+  }
+  public async getTotalUsersInCache(): Promise<number> {
+    try {
+      if (!this.client.isOpen) {
+        await this.client.connect();
+      }
+      const count: number = await this.client.ZCARD('user');
+      return count;
     } catch (error) {
       log.error(error);
       throw new ServerError('Server error. Try again.');

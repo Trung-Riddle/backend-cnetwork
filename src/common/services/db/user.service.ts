@@ -40,6 +40,11 @@ class UserService {
     return users;
   }
 
+  public async usersCount(): Promise<number> {
+    const count: number = await UserModel.find({}).countDocuments();
+    return count;
+  }
+
   public async searchUsers(regex: RegExp): Promise<ISearchUser[]> {
     const users = await AuthModel.aggregate([
       { $match: { username: regex } },

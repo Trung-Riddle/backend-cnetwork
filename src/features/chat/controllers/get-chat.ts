@@ -24,7 +24,7 @@ export class GetChat {
 
     let messages: IMessageData[] = [];
     const cachedMessages: IMessageData[] = await messageCache.getChatMessagesFromCache(`${req.currentUser!.userId}`, `${receiverId}`);
-    if(cachedMessages.length) {
+    if (cachedMessages.length) {
       messages = cachedMessages;
     } else {
       messages = await chatService.getMessages(
@@ -36,5 +36,4 @@ export class GetChat {
 
     res.status(HTTP_STATUS.OK).json({ message: 'User chat messages', messages });
   }
-
 }
