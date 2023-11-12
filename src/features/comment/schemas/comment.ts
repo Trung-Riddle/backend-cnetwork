@@ -2,13 +2,13 @@ import Joi, { ObjectSchema } from 'joi';
 
 const addCommentSchema: ObjectSchema = Joi.object().keys({
   userTo: Joi.string().required().messages({
-    'any.required': 'userTo is a required property'
+    'any.required': 'userTo required'
   }),
   postId: Joi.string().required().messages({
-    'any.required': 'postId is a required property'
+    'any.required': 'postId required'
   }),
   comment: Joi.string().required().messages({
-    'any.required': 'comment is a required property'
+    'any.required': 'comment required'
   }),
   profilePicture: Joi.string().optional().allow(null, ''),
   commentsCount: Joi.number().optional().allow(null, '')

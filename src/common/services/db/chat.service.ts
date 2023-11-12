@@ -42,7 +42,7 @@ class ChatService {
       {
         $group: {
           _id: '$conversationId',
-          $result: { $last: '$$ROOT' }
+          result: { $last: '$$ROOT' }
         }
       },
       {
@@ -67,7 +67,7 @@ class ChatService {
       },
       { $sort: { createdAt: 1 } }
     ]);
-    return messages || [];
+    return messages;
   }
 
   public async getMessages(senderId: ObjectId, receiverId: ObjectId, sort: Record<string, 1 | -1>): Promise<IMessageData[]> {

@@ -1,9 +1,12 @@
 import { Helper } from '#Global/helpers/helper';
+import { INotificationDocument } from '#Notification/interfaces/notification.interface';
+import { NotificationModel } from '#Notification/models/notification.schema';
 import { IPostDocument } from '#Post/interfaces/post.interface';
 import { PostModel } from '#Post/models/post.schema';
 import { IQueryReaction, IReactionDocument, IReactionJob } from '#Reaction/interfaces/reaction.interface';
 import { ReactionModel } from '#Reaction/models/reaction.schema';
 import { UserCache } from '#Services/redis/user.cache';
+import { socketIONotificationObject } from '#Socket/notification.socket';
 import { IUserDocument } from '#User/interfaces/user.interface';
 import { omit } from 'lodash';
 import mongoose from 'mongoose';
@@ -31,8 +34,26 @@ class ReactionService {
         { new: true }
       )
     ])) as unknown as [IUserDocument, IReactionDocument, IPostDocument];
+    if (updatedReaction[0].notifications.reactions && userTo !== userFrom) {
+      const notificationModel: INotificationDocument = new NotificationModel();
+      const notifications = await notificationModel.insertNotification({
+        userFrom: userFrom as string,
+        userTo: userTo as string,
+        message: `${username} đã thả cảm xúc về bài viết của bạn.`,
+        notificationType: 'reactions',
+        entityId: new mongoose.Types.ObjectId(postId),
+        createdItemId: new mongoose.Types.ObjectId(updatedReaction[1]._id!),
+        createdAt: new Date(),
+        comment: '',
+        post: updatedReaction[2].post,
+        imgId: updatedReaction[2].imgId!,
+        imgVersion: updatedReaction[2].imgVersion!,
+        gifUrl: updatedReaction[2].gifUrl!,
+        reaction: type!
+      });
+      socketIONotificationObject.emit('insert notification', notifications, { userTo });
+    }
   }
-
   public async removeReactionDataFromDB(reactionData: IReactionJob): Promise<void> {
     const { postId, previousReaction, username } = reactionData;
     await Promise.all([

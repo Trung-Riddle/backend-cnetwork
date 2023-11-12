@@ -14,9 +14,13 @@ export class GetChat {
     if (cachedList.length) {
       list = cachedList;
     } else {
-      await chatService.getUserConversationList(new mongoose.Types.ObjectId(req.currentUser!.userId));
+        list = await chatService.getUserConversationList(new mongoose.Types.ObjectId(req.currentUser!.userId));
+      }
+    if (list.length === 0) {
+      res.status(HTTP_STATUS.OK).json({ message: 'Không có cuộc trò chuyện nào', list });
+    } else {
+      res.status(HTTP_STATUS.OK).json({ message: 'Danh sách cuộc trò chuyện của người dùng', list });
     }
-    res.status(HTTP_STATUS.OK).json({ message: 'Danh sách cuộc trò chuyện của người dùng', list });
   }
 
   public async messages(req: Request, res: Response): Promise<void> {
@@ -24,7 +28,7 @@ export class GetChat {
 
     let messages: IMessageData[] = [];
     const cachedMessages: IMessageData[] = await messageCache.getChatMessagesFromCache(`${req.currentUser!.userId}`, `${receiverId}`);
-    if(cachedMessages.length) {
+    if (cachedMessages.length) {
       messages = cachedMessages;
     } else {
       messages = await chatService.getMessages(
@@ -36,5 +40,4 @@ export class GetChat {
 
     res.status(HTTP_STATUS.OK).json({ message: 'User chat messages', messages });
   }
-
 }

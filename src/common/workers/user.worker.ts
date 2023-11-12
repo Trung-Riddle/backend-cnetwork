@@ -3,7 +3,7 @@ import Logger from 'bunyan';
 import { config } from '@root/config';
 import { userService } from '@root/common/services/db/user.service';
 
-const log: Logger = config.createLogger('authWorker');
+const log: Logger = config.createLogger('userWorker');
 
 class UserWorker {
   async addUserToDB(job: Job, done: DoneCallback): Promise<void> {

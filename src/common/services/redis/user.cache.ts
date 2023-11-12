@@ -5,6 +5,7 @@ import { BaseCache } from '@root/common/services/redis/base.cache';
 import { INotificationSettings, ISocialLinks, IUserDocument } from '#User/interfaces/user.interface';
 import { config } from '@root/config';
 import Logger from 'bunyan';
+import { findIndex, indexOf } from 'lodash';
 
 const log: Logger = config.createLogger('userCache');
 type UserItem = string | ISocialLinks | INotificationSettings;
@@ -35,7 +36,7 @@ export class UserCache extends BaseCache {
       school,
       location,
       quote,
-      bgImageCover,
+      bgImageVersion,
       bgImageId,
       social
     } = createUser;
@@ -60,7 +61,7 @@ export class UserCache extends BaseCache {
       school: `${school}`,
       location: `${location}`,
       quote: `${quote}`,
-      bgImageCover: `${bgImageCover}`,
+      bgImageVersion: `${bgImageVersion}`,
       bgImageId: `${bgImageId}`,
       social: JSON.stringify(social),
       createdAt: `${createdAt}`
@@ -94,7 +95,7 @@ export class UserCache extends BaseCache {
       response.followersCount = Helper.parseJson(`${response.followersCount}`);
       response.followingCount = Helper.parseJson(`${response.followingCount}`);
       response.profilePicture = Helper.parseJson(`${response.profilePicture}`);
-      response.bgImageCover = Helper.parseJson(`${response.bgImageCover}`);
+      response.bgImageVersion = Helper.parseJson(`${response.bgImageVersion}`);
       response.bgImageId = Helper.parseJson(`${response.bgImageId}`);
       response.birthday = Helper.parseJson(`${response.birthday}`);
       response.work = Helper.parseJson(`${response.work}`);
@@ -132,12 +133,79 @@ export class UserCache extends BaseCache {
         reply.followersCount = Helper.parseJson(`${reply.followersCount}`);
         reply.followingCount = Helper.parseJson(`${reply.followingCount}`);
         reply.bgImageId = Helper.parseJson(`${reply.bgImageId}`);
-        reply.bgImageCover = Helper.parseJson(`${reply.bgImageCover}`);
+        reply.bgImageVersion = Helper.parseJson(`${reply.bgImageVersion}`);
         reply.profilePicture = Helper.parseJson(`${reply.profilePicture}`);
 
         userReplies.push(reply);
       }
       return userReplies;
+    } catch (error) {
+      log.error(error);
+      throw new ServerError('Server error. Try again.');
+    }
+  }
+  public async getRandomUsersFromCache(userId: string, excludedUsername: string): Promise<IUserDocument[]> {
+    try {
+      if (!this.client.isOpen) {
+        await this.client.connect();
+      }
+      const replies: IUserDocument[] = [];
+      const followers: string[] = await this.client.LRANGE(`followers:${userId}`, 0, -1);
+      const users: string[] = await this.client.ZRANGE('user', 0, -1);
+      const randomUsers: string[] = Helper.shuffle(users).slice(0, 10);
+      for (const key of randomUsers) {
+        const followerIndex = indexOf(followers, key);
+        if (followerIndex < 0) {
+          const userHash: IUserDocument = (await this.client.HGETALL(`users:${key}`)) as unknown as IUserDocument;
+          replies.push(userHash);
+        }
+      }
+      const excludedUsernameIndex: number = findIndex(replies, ['username', excludedUsername]);
+      replies.splice(excludedUsernameIndex, 1);
+      for (const reply of replies) {
+        reply.createdAt = new Date(Helper.parseJson(`${reply.createdAt}`));
+        reply.postsCount = Helper.parseJson(`${reply.postsCount}`);
+        reply.blocked = Helper.parseJson(`${reply.blocked}`);
+        reply.blockedBy = Helper.parseJson(`${reply.blockedBy}`);
+        reply.notifications = Helper.parseJson(`${reply.notifications}`);
+        reply.social = Helper.parseJson(`${reply.social}`);
+        reply.followersCount = Helper.parseJson(`${reply.followersCount}`);
+        reply.followingCount = Helper.parseJson(`${reply.followingCount}`);
+        reply.bgImageId = Helper.parseJson(`${reply.bgImageId}`);
+        reply.bgImageVersion = Helper.parseJson(`${reply.bgImageVersion}`);
+        reply.profilePicture = Helper.parseJson(`${reply.profilePicture}`);
+        reply.work = Helper.parseJson(`${reply.work}`);
+        reply.school = Helper.parseJson(`${reply.school}`);
+        reply.location = Helper.parseJson(`${reply.location}`);
+        reply.quote = Helper.parseJson(`${reply.quote}`);
+        reply.birthday = Helper.parseJson(`${reply.birthday}`);
+      }
+      return replies;
+    } catch (error) {
+      log.error(error);
+      throw new ServerError('Server error. Try again.');
+    }
+  }
+  public async updateSingleUserItemInCache(userId: string, prop: string, value: UserItem): Promise<IUserDocument | null> {
+    try {
+      if (!this.client.isOpen) {
+        await this.client.connect();
+      }
+      await this.client.HSET(`users:${userId}`, `${prop}`, JSON.stringify(value));
+      const response: IUserDocument = (await this.getUserFromCache(userId)) as IUserDocument;
+      return response;
+    } catch (error) {
+      log.error(error);
+      throw new ServerError('Server error. Try again.');
+    }
+  }
+  public async getTotalUsersInCache(): Promise<number> {
+    try {
+      if (!this.client.isOpen) {
+        await this.client.connect();
+      }
+      const count: number = await this.client.ZCARD('user');
+      return count;
     } catch (error) {
       log.error(error);
       throw new ServerError('Server error. Try again.');
