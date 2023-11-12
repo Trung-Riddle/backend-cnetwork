@@ -10,8 +10,10 @@ import { IPostJobData } from '#Post/interfaces/post.interface';
 import { IChatJobData, IMessageData } from '#Chat/interfaces/chat.interface';
 import { IFollowerJobData } from '#Follower/interfaces/follwer.interface';
 import { IReactionJob } from '#Reaction/interfaces/reaction.interface';
+import { ICommentJob } from '#Comment/interfaces/comment.interface';
+import { INotificationJobData } from '#Notification/interfaces/notification.interface';
 
-type IBaseJobData = IAuthJob | IEmailJob | IPostJobData | IChatJobData | IMessageData | IFollowerJobData | IReactionJob;
+type IBaseJobData = IAuthJob | IEmailJob | IPostJobData | IChatJobData | IMessageData | IFollowerJobData | IReactionJob | ICommentJob | INotificationJobData;
 let bullAdapter: BullAdapter[] = [];
 export let serverAdapter: ExpressAdapter;
 

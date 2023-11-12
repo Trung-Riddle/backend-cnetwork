@@ -1,7 +1,6 @@
 import { DoneCallback, Job } from 'bull';
 import Logger from 'bunyan';
 import { config } from '@root/config';
-import { userService } from '@root/common/services/db/user.service';
 import { mailTransport } from '#Services/email/mail.transport';
 
 const log: Logger = config.createLogger('emailWorker');

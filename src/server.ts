@@ -18,6 +18,7 @@ import { SocketIOPostHandler } from '#Socket/post.socket';
 import { SocketIOChatHandler } from '#Socket/chat.socket';
 import { SocketIOFollowerHandler } from '#Socket/follower.socket';
 import { SocketIOUserHandler } from '#Socket/user';
+import { SocketIONotificationHandler } from '#Socket/notification.socket';
 
 const SERVER_PORT = 4080;
 const log: Logger = config.createLogger('server');
@@ -121,10 +122,12 @@ export class Lime8Server {
     const messageSocketHandler: SocketIOChatHandler = new SocketIOChatHandler(io);
     const followerSocketHandler: SocketIOFollowerHandler = new SocketIOFollowerHandler(io);
     const socketIOUserHandler: SocketIOUserHandler = new SocketIOUserHandler(io);
+    const socketIONotificationHandler: SocketIONotificationHandler = new SocketIONotificationHandler();
 
     postSocketHandler.listen();
     followerSocketHandler.listen();
     messageSocketHandler.listen();
     socketIOUserHandler.listen();
+    socketIONotificationHandler.listen(io);
   }
 }
