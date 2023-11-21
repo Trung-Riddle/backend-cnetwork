@@ -9,6 +9,7 @@ class Application {
     const app: Express = express();
     const server: Lime8Server = new Lime8Server(app);
     server.start();
+
   }
 
   private loadConfig(): void {
