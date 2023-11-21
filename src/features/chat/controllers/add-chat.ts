@@ -94,8 +94,8 @@ export class AddChat {
     res.status(HTTP_STATUS.OK).json({ message: 'Users removed' });
   }
   private emitSocketIOEvent(data: IMessageData): void {
-    socketIOChatObject.emit('Message received', data);
-    socketIOChatObject.emit('Chat list', data);
+    socketIOChatObject.emit('message received', data);
+    socketIOChatObject.emit('chat list', data);
   }
   private async messageNotification({ currentUser, message, receiverName, receiverId }: IMessageNotification): Promise<void> {
     const cachedUser: IUserDocument = (await userCache.getUserFromCache(`${receiverId}`)) as IUserDocument;
