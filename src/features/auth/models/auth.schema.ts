@@ -35,7 +35,7 @@ authSchema.methods.comparePassword = async function (password: string): Promise<
   const hashedPassword: string = (this as unknown as IAuthDocument).password!;
   return compare(password, hashedPassword);
 };
-authSchema.methods.hashPassword = async function (password: string): Promise<string> {
+authSchema.methods.hashPassWord = async function (password: string): Promise<string> {
   return hash(password, SALT_ROUND);
 };
 export const AuthModel: Model<IAuthDocument> = model<IAuthDocument>('Auth', authSchema, 'Auth');
