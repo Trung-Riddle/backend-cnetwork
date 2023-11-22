@@ -6,6 +6,7 @@ import { addReactionSchema } from '#Reaction/schemas/reaction';
 import { joiValidation } from '#Global/decorators/joi-validation.decorator';
 import { ReactionCache } from '#Services/redis/reaction.cache';
 import { reactionQueue } from '#Services/queues/reaction.queue';
+import { socketIOPostObject } from '#Socket/post.socket';
 
 const reactionCache: ReactionCache = new ReactionCache();
 
@@ -23,7 +24,7 @@ export class Add {
     } as IReactionDocument;
 
     await reactionCache.savePostReactionToCache(postId, reactionObject, postReactions, type, previousReaction);
-
+    socketIOPostObject.emit('reaction', reactionObject);
     const databaseReactionData: IReactionJob = {
       postId,
       userTo,

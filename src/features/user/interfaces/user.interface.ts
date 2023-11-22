@@ -22,7 +22,7 @@ export interface IUserDocument extends Document {
   followingCount: number;
   notifications: INotificationSettings;
   social: ISocialLinks;
-  bgImageCover: string;
+  bgImageVersion: string;
   bgImageId: string;
   profilePicture: string;
   relatives?: mongoose.Types.ObjectId[];
@@ -36,6 +36,7 @@ export interface IBasicInfo {
   work: string;
   school: string;
   location: string;
+  birthday: string;
 }
 export interface INotificationSettings {
   messages: boolean;

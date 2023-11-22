@@ -3,7 +3,7 @@ import Logger from 'bunyan';
 import { config } from '@root/config';
 import blockUserService from '#Services/db/block-user.service';
 
-const log: Logger = config.createLogger('emailWorker');
+const log: Logger = config.createLogger('blockerWorker');
 
 class BlockedWorker {
   async addBlockedUserToDB(job: Job, done: DoneCallback): Promise<void> {

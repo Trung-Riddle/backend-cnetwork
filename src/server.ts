@@ -18,6 +18,7 @@ import { SocketIOPostHandler } from '#Socket/post.socket';
 import { SocketIOChatHandler } from '#Socket/chat.socket';
 import { SocketIOFollowerHandler } from '#Socket/follower.socket';
 import { SocketIOUserHandler } from '#Socket/user';
+import { SocketIONotificationHandler } from '#Socket/notification.socket';
 
 const SERVER_PORT = 4080;
 const log: Logger = config.createLogger('server');
@@ -102,6 +103,7 @@ export class Lime8Server {
         methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
       }
     });
+
     const pubClient = createClient({ url: config.REDIS_HOST });
     const subClient = pubClient.duplicate();
     await Promise.all([pubClient.connect(), subClient.connect()]);
@@ -117,14 +119,17 @@ export class Lime8Server {
   }
   private socketIOConnection(io: ServerSocketIO): void {
     // log.info('socketIOConnection');
+
     const postSocketHandler: SocketIOPostHandler = new SocketIOPostHandler(io);
     const messageSocketHandler: SocketIOChatHandler = new SocketIOChatHandler(io);
     const followerSocketHandler: SocketIOFollowerHandler = new SocketIOFollowerHandler(io);
     const socketIOUserHandler: SocketIOUserHandler = new SocketIOUserHandler(io);
+    const socketIONotificationHandler: SocketIONotificationHandler = new SocketIONotificationHandler();
 
     postSocketHandler.listen();
     followerSocketHandler.listen();
     messageSocketHandler.listen();
     socketIOUserHandler.listen();
+    socketIONotificationHandler.listen(io);
   }
 }
