@@ -19,6 +19,7 @@ import { SocketIOChatHandler } from '#Socket/chat.socket';
 import { SocketIOFollowerHandler } from '#Socket/follower.socket';
 import { SocketIOUserHandler } from '#Socket/user';
 import { SocketIONotificationHandler } from '#Socket/notification.socket';
+import { SocketIOImageHandler } from '#Socket/image.socket';
 
 const SERVER_PORT = 4080;
 const log: Logger = config.createLogger('server');
@@ -117,19 +118,19 @@ export class Lime8Server {
       log.info('Server running on port ' + SERVER_PORT);
     });
   }
-  private socketIOConnection(io: ServerSocketIO): void {
-    // log.info('socketIOConnection');
-
+  private socketIOConnection(io: any): void {
     const postSocketHandler: SocketIOPostHandler = new SocketIOPostHandler(io);
     const messageSocketHandler: SocketIOChatHandler = new SocketIOChatHandler(io);
     const followerSocketHandler: SocketIOFollowerHandler = new SocketIOFollowerHandler(io);
     const socketIOUserHandler: SocketIOUserHandler = new SocketIOUserHandler(io);
     const socketIONotificationHandler: SocketIONotificationHandler = new SocketIONotificationHandler();
+    const imageSocketHandler: SocketIOImageHandler = new SocketIOImageHandler();
 
     postSocketHandler.listen();
     followerSocketHandler.listen();
     messageSocketHandler.listen();
     socketIOUserHandler.listen();
     socketIONotificationHandler.listen(io);
+    imageSocketHandler.listen(io);
   }
 }

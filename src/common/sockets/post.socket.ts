@@ -12,11 +12,10 @@ export class SocketIOPostHandler {
   public listen(): void {
     this.io.on('connection', (socket: Socket) => {
       socket.on('reaction', (reaction: IReactionDocument) => {
-        socket.emit('update like', reaction);
+        this.io.emit('update like', reaction);
       });
       socket.on('comment', (data: ICommentDocument) => {
-        console.log('socket comment', data);
-        socket.emit('update comment', data);
+        this.io.emit('update comment', data);
       });
     });
   }
