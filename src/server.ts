@@ -10,6 +10,7 @@ import { createClient } from 'redis';
 import { createAdapter } from '@socket.io/redis-adapter';
 import 'express-async-errors';
 import compression from 'compression';
+import apiStats from 'swagger-stats';
 import Logger from 'bunyan';
 import { config } from '@root/config';
 import ApplicationRoutes from '@root/routes';
@@ -33,6 +34,7 @@ export class Lime8Server {
     this.securityMiddleware(this.app);
     this.standardMiddleware(this.app);
     this.routesMiddleware(this.app);
+    this.apiMonitoring(this.app);
     this.globalErrorHandler(this.app);
     this.startServer(this.app);
   }
@@ -74,6 +76,13 @@ export class Lime8Server {
   private routesMiddleware(app: Application): void {
     ApplicationRoutes(app);
   }
+  private apiMonitoring(app: Application): void {
+    app.use(
+      apiStats.getMiddleware({
+        uriPath: '/api-monitoring'
+      })
+    );
+  }
   private globalErrorHandler(app: Application): void {
     app.all('*', (req: Request, res: Response) => {
       res.status(HTTP_STATUS.NOT_FOUND).json({ message: `${req.originalUrl} not found` });
@@ -88,6 +97,9 @@ export class Lime8Server {
     });
   }
   private async startServer(app: Application): Promise<void> {
+    if (!config.JWT_TOKEN) {
+      throw new Error('JWT_TOKEN must be provided');
+    }
     try {
       const httpServer: http.Server = new http.Server(app);
       this.startHttpServer(httpServer);
@@ -112,6 +124,7 @@ export class Lime8Server {
   }
 
   private startHttpServer(httpServer: http.Server): void {
+    log.info(`Worker with process id of ${process.pid} has started...`);
     log.info(`Server has started with process ${process.pid}`);
     httpServer.listen(SERVER_PORT, () => {
       log.info('Server running on port ' + SERVER_PORT);

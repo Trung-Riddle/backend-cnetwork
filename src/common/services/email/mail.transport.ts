@@ -17,11 +17,11 @@ sendGridMail.setApiKey(config.SENDGRID_API_KEY!);
 
 class MailTransport {
   public async sendEmail(receiverEmail: string, subject: string, body: string): Promise<void> {
-    if (config.NODE_ENV === 'test' || config.NODE_ENV === 'development') {
-      this.devEmailSender(receiverEmail, subject, body);
-    } else {
+    // if (config.NODE_ENV === 'test' || config.NODE_ENV === 'development') {
+    //   this.devEmailSender(receiverEmail, subject, body);
+    // } else {
       this.productionEmailSender(receiverEmail, subject, body);
-    }
+    // }
   }
 
   private async devEmailSender(receiverEmail: string, subject: string, body: string): Promise<void> {
