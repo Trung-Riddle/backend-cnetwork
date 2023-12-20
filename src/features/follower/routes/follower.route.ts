@@ -20,7 +20,6 @@ class FollowerRoutes {
     this.router.put('/user/block/:followerId', authMiddleware.checkAuthentication, AddUser.prototype.block);
     this.router.put('/user/unblock/:followerId', authMiddleware.checkAuthentication, AddUser.prototype.unblock);
 
-
     return this.router;
   }
 }

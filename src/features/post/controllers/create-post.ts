@@ -8,7 +8,7 @@ import { PostCache } from '#Services/redis/post.cache';
 import { socketIOPostObject } from '#Socket/post.socket';
 import postQueue from '#Services/queues/post.queue';
 import { UploadApiResponse } from 'cloudinary';
-import { uploads } from '#Global/helpers/cloudinary-upload';
+import { uploads, videoUpload } from '#Global/helpers/cloudinary-upload';
 import { BadRequestError } from '#Global/helpers/errorHandler';
 import imageQueue from '#Services/queues/image.queue';
 
@@ -96,7 +96,7 @@ export class CreatePost {
   @joiValidation(postWithVideoSchema)
   public async postWithVideo(req: Request, res: Response): Promise<void> {
     const { post, bgColor, privacy, gifUrl, profilePicture, feelings, videoPost } = req.body;
-    const result: UploadApiResponse = (await uploads(videoPost)) as UploadApiResponse;
+    const result: UploadApiResponse = (await videoUpload(videoPost)) as UploadApiResponse;
     if (!result?.public_id) {
       throw new BadRequestError(result.message);
     }
@@ -129,6 +129,7 @@ export class CreatePost {
       uId: `${req.currentUser!.uId}`,
       createdPost
     });
+    console.log('NEXT>>>>');
     postQueue.addPostJob('addPostToDB', { key: req.currentUser!.userId, value: createdPost });
     imageQueue.addImageJob('addImageToDB', {
       key: `${req.currentUser!.userId}`,

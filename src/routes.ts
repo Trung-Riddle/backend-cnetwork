@@ -11,12 +11,18 @@ import { reactionRoutes } from '#Reaction/routes/reaction.route';
 import { commentRoutes } from '#Comment/routes/comment.route';
 import { notificationRoutes } from '#Notification/routes/notification.route';
 import { imageRoutes } from '#Image/routes/image.route';
+import { healthRoutes } from '#User/routes/heath.route';
 
 const BASE_PATH = '/api/v1';
 
 export default (app: Application) => {
   const routes = () => {
     app.use('/queues', serverAdapter.getRouter());
+    app.use('', healthRoutes.health());
+    app.use('', healthRoutes.env());
+    app.use('', healthRoutes.instance());
+    app.use('', healthRoutes.fiboRoutes());
+
     app.use(BASE_PATH, authRoutes.routes());
     app.use(BASE_PATH, authRoutes.signOutRoute());
     // current user

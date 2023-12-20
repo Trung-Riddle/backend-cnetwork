@@ -42,7 +42,7 @@ export class AddChat {
     const sender: IUserDocument = (await userCache.getUserFromCache(`${req.currentUser!.userId}`)) as IUserDocument;
 
     if (selectedImage.length) {
-      const result: UploadApiResponse = (await uploads(req.body.image, req.currentUser!.userId, true, true)) as UploadApiResponse;
+      const result: UploadApiResponse = (await uploads(selectedImage, req.currentUser!.userId, true, true)) as UploadApiResponse;
       if (!result?.public_id) {
         throw new BadRequestError(result.message);
       }
@@ -69,14 +69,14 @@ export class AddChat {
       deleteForMe: false
     };
     AddChat.prototype.emitSocketIOEvent(messageData);
-    if (!isRead) {
-      AddChat.prototype.messageNotification({
-        currentUser: req.currentUser!,
-        message: content,
-        receiverName: receiverUsername,
-        receiverId
-      });
-    }
+    // if (!isRead) {
+    //   AddChat.prototype.messageNotification({
+    //     currentUser: req.currentUser!,
+    //     message: content,
+    //     receiverName: receiverUsername,
+    //     receiverId
+    //   });
+    // }
     await messageCache.addChatListToCache(`${req.currentUser?.userId}`, `${receiverId}`, `${conversationObjectId}`);
     await messageCache.addChatListToCache(`${receiverId}`, `${req.currentUser?.userId}`, `${conversationObjectId}`);
     await messageCache.addChatMessageToCache(`${conversationObjectId}`, messageData);
