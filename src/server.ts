@@ -50,12 +50,13 @@ export class Lime8Server {
     app.use(hpp());
     app.use(helmet());
     app.use(
-      cors({
-        origin: config.CLIENT_URL,
-        credentials: true,
-        optionsSuccessStatus: 200,
-        methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
-      })
+      cors()
+      // {
+      //   origin: config.CLIENT_URL,
+      //   credentials: true,
+      //   optionsSuccessStatus: 200,
+      //   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
+      // }
     );
     console.log(config.CLIENT_URL);
   }
