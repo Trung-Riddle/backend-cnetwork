@@ -8,7 +8,9 @@ const log: Logger = config.createLogger('setupDatabase');
 export default () => {
   const connect = () => {
     mongoose
-      .connect(`${config.DATABASE_URL}`)
+      .connect(`${config.DATABASE_URL}`, {
+        dbName: 'lime8'
+      })
       .then(() => {
         log.info('Successfully connected mongoDB!!!');
         redisConnection.connect();
