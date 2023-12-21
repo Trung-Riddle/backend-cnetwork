@@ -60,7 +60,7 @@ class MailTransport {
       log.info('Production email sent successfully');
     } catch (error) {
       log.error('Error sending email', error);
-      throw new BadRequestError('Error sending email');
+      // throw new BadRequestError('Error sending email');
     }
   }
 }
