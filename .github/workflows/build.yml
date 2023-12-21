@@ -1,0 +1,27 @@
+name: build
+
+on:
+  push:
+    branches:
+      - final
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: SSH into Server
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: 20.205.25.219
+          username: lime8
+          password: ${{ secrets.HOST_PASS }}
+          port: 22
+          script: |
+            cd backend-cnetwork
+            git pull origin final
+            npm install
+            npm run build
+            pm2 restart backend-cnetwork
