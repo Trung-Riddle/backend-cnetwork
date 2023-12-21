@@ -17,6 +17,10 @@ export class SocketIOPostHandler {
       socket.on('comment', (data: ICommentDocument) => {
         this.io.emit('update comment', data);
       });
+
+      socket.on('typing', (data) => {
+        socket.broadcast.emit('typing', data);
+      });
     });
   }
 }

@@ -20,7 +20,7 @@ class MailTransport {
     // if (config.NODE_ENV === 'test' || config.NODE_ENV === 'development') {
     //   this.devEmailSender(receiverEmail, subject, body);
     // } else {
-      this.productionEmailSender(receiverEmail, subject, body);
+    this.productionEmailSender(receiverEmail, subject, body);
     // }
   }
 

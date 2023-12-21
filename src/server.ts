@@ -116,6 +116,7 @@ export class Lime8Server {
         methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
       }
     });
+
     const pubClient = createClient({ url: config.REDIS_HOST });
     const subClient = pubClient.duplicate();
     await Promise.all([pubClient.connect(), subClient.connect()]);
@@ -137,7 +138,7 @@ export class Lime8Server {
     const socketIOUserHandler: SocketIOUserHandler = new SocketIOUserHandler(io);
     const socketIONotificationHandler: SocketIONotificationHandler = new SocketIONotificationHandler();
     const imageSocketHandler: SocketIOImageHandler = new SocketIOImageHandler();
-
+    console.log(messageSocketHandler.listen());
     postSocketHandler.listen();
     followerSocketHandler.listen();
     messageSocketHandler.listen();

@@ -22,7 +22,7 @@ class UserService {
           school: info['school'],
           quote: info['quote'],
           location: info['location'],
-          birthday: info['birthday'],
+          birthday: info['birthday']
         }
       }
     ).exec();

@@ -1,5 +1,6 @@
 import followerQueue from '#Services/queues/follower.queue';
 import { FollowerCache } from '#Services/redis/follower.cache';
+import { socketIOFollowerObject } from '#Socket/follower.socket';
 import { Request, Response } from 'express';
 import HTTP_STATUS from 'http-status-codes';
 
@@ -17,6 +18,10 @@ export class Remove {
     const followersCount: Promise<void> = followerCache.updateFollowersCountInCache(`${followeeId}`, 'followersCount', -1);
     const followeeCount: Promise<void> = followerCache.updateFollowersCountInCache(`${followerId}`, 'followingCount', -1);
     await Promise.all([removeFollowerFromCache, removeFolloweeFromCache, followersCount, followeeCount]);
+    socketIOFollowerObject.emit('remove follower', {
+      followeeId,
+      followersCount: 1
+    });
 
     followerQueue.addFollowerJob('removeFollowerFromDB', {
       keyOne: `${followeeId}`,

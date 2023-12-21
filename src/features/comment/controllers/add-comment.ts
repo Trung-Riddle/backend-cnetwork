@@ -6,19 +6,14 @@ import { CommentCache } from '#Services/redis/comment.cache';
 import commentQueue from '#Services/queues/comment.queue';
 import { ICommentDocument, ICommentJob } from '#Comment/interfaces/comment.interface';
 import { addCommentSchema } from '#Comment/schemas/comment';
-
+import { socketIOPostObject } from '#Socket/post.socket';
 
 const commentCache: CommentCache = new CommentCache();
 
 export class AddComment {
   @joiValidation(addCommentSchema)
   public async comment(req: Request, res: Response): Promise<void> {
-    const {
-      userTo,
-      postId,
-      profilePicture,
-      comment
-    } = req.body;
+    const { userTo, postId, profilePicture, comment } = req.body;
     const commentObjectId: ObjectId = new ObjectId();
 
     const commentData: ICommentDocument = {
@@ -28,8 +23,9 @@ export class AddComment {
       avatarColor: `${req.currentUser?.avatarColor}`,
       profilePicture,
       comment,
-      createdAt: new Date(),
+      createdAt: new Date()
     } as ICommentDocument;
+    socketIOPostObject.emit('add comment', commentData);
     await commentCache.savePostCommentToCache(postId, JSON.stringify(commentData));
     const dbCmtData: ICommentJob = {
       postId,
@@ -39,6 +35,6 @@ export class AddComment {
       comment: commentData
     };
     commentQueue.addCommentJob('addCommentToDB', dbCmtData);
-    res.status(HTTP_STATUS.OK).json({ message: 'Vừa đăng bình luận'});
+    res.status(HTTP_STATUS.OK).json({ message: 'Vừa đăng bình luận' });
   }
 }
